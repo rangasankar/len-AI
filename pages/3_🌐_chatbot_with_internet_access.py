@@ -43,7 +43,7 @@ class ChatbotTools:
     @utils.enable_chat_history
     def main(self):
         agent = self.setup_agent()
-        user_query = st.chat_input(placeholder="Ask me anything!")
+        user_query = st.chat_input(placeholder="Ask me anything related to Storage!")
         if user_query:
             utils.display_msg(user_query, 'user')
             with st.chat_message("assistant"):
