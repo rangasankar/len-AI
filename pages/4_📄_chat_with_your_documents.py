@@ -38,10 +38,11 @@ class CustomDataChatbot:
         docs = []
         for file in uploaded_files:
             file_path = self.save_file(file)
-            loader = PyPDFLoader(file_path)
             if file.endswith(".txt"):
                 loader = TextLoader(file, encoding = 'UTF-8')
                 st.write('TextLoad the file')
+            else:
+                loader = PyPDFLoader(file_path)
             docs.extend(loader.load())
         
         # Split documents
