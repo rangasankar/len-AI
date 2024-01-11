@@ -78,7 +78,7 @@ class CustomDataChatbot:
             st.error("Please upload PDF documents to continue!")
             st.stop()
 
-        user_query = st.chat_input(placeholder="Ask me anything!")
+        user_query = st.chat_input(placeholder="Ask me anything so that i can go over the uploaded document(s) and provide you with a respone.")
 
         if uploaded_files and user_query:
             qa_chain = self.setup_qa_chain(uploaded_files)
