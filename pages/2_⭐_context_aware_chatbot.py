@@ -12,28 +12,32 @@ st.write('Enhancing  Storage Chatbot Interactions through Context Awareness')
 st.write('[![view source code ](https://img.shields.io/badge/view_source_code-gray?logo=github)](https://github.com/rangasankar/len-AI/blob/master/pages/2_%E2%AD%90_context_aware_chatbot.py)')
 
 class ContextChatbot:
-
-    def __init__(self):
-        utils.configure_openai_api_key()
-        self.openai_model = "gpt-3.5-turbo"
+def __init__(self):
+        utils.sync_st_session()
+        self.llm = utils.configure_llm()
     
     @st.cache_resource
     def setup_chain(_self):
         memory = ConversationBufferMemory()
-        llm = OpenAI(model_name=_self.openai_model, temperature=0, streaming=True)
-        chain = ConversationChain(llm=llm, memory=memory, verbose=True)
+        chain = ConversationChain(llm=_self.llm, memory=memory, verbose=False)
         return chain
     
     @utils.enable_chat_history
     def main(self):
         chain = self.setup_chain()
-        user_query = st.chat_input(placeholder="Ask me anything about Storage!")
+        user_query = st.chat_input(placeholder="Ask me anything!")
         if user_query:
             utils.display_msg(user_query, 'user')
             with st.chat_message("assistant"):
                 st_cb = StreamHandler(st.empty())
-                response = chain.run(user_query, callbacks=[st_cb])
+                result = chain.invoke(
+                    {"input":user_query},
+                    {"callbacks": [st_cb]}
+                )
+                response = result["response"]
                 st.session_state.messages.append({"role": "assistant", "content": response})
+                utils.print_qa(ContextChatbot, user_query, response)
+   
 
 if __name__ == "__main__":
     obj = ContextChatbot()
